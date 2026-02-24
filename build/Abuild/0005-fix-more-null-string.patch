@@ -1,0 +1,27 @@
+diff --git a/src/xkbcomp/xkbcomp.c b/src/xkbcomp/xkbcomp.c
+index 05a83a1c..c285c071 100644
+--- a/src/xkbcomp/xkbcomp.c
++++ b/src/xkbcomp/xkbcomp.c
+@@ -62,8 +62,8 @@ text_v1_keymap_new_from_names(struct xkb_keymap *keymap,
+     log_dbg(keymap->ctx, XKB_LOG_MESSAGE_NO_ID,
+             "Compiling from RMLVO: rules '%s', model '%s', layout '%s', "
+             "variant '%s', options '%s'\n",
+-            rmlvo->rules, rmlvo->model, rmlvo->layout, rmlvo->variant,
+-            rmlvo->options);
++            strnull(rmlvo->rules),  strnull(rmlvo->model),  strnull(rmlvo->layout),  strnull(rmlvo->variant),
++            strnull(rmlvo->options));
+ 
+     /* Resolve the RMLVO component to KcCGST components and get the
+      * expected number of layouts */
+@@ -73,8 +73,8 @@ text_v1_keymap_new_from_names(struct xkb_keymap *keymap,
+         log_err(keymap->ctx, XKB_ERROR_KEYMAP_COMPILATION_FAILED,
+                 "Couldn't look up rules '%s', model '%s', layout '%s', "
+                 "variant '%s', options '%s'\n",
+-                rmlvo->rules, rmlvo->model, rmlvo->layout, rmlvo->variant,
+-                rmlvo->options);
++            strnull(rmlvo->rules),  strnull(rmlvo->model),  strnull(rmlvo->layout),  strnull(rmlvo->variant),
++            strnull(rmlvo->options));
+         return false;
+     }
+ 
+

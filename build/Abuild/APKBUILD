@@ -1,0 +1,91 @@
+pkgname=libxkbcommon
+pkgver=1.8.0
+pkgrel=2
+pkgdesc="keyboard handling library"
+url="https://xkbcommon.org/"
+arch="all"
+#options="!check"
+license="MIT AND MIT-open-group AND HPND AND HPND-sell-variant AND LicenseRef-digital-equipment-corporation"
+depends="xkeyboard-config libx11 qnx-io-sock"
+makedepends="
+    bison
+    libxml2-dev
+    meson
+    ninja 
+    pkgconf
+    pkgconf-dev
+    wayland-dev
+    wayland-protocols
+    xkeyboard-config-dev
+    qnx-io-sock-dev
+    "
+subpackages="
+    $pkgname-static
+    $pkgname-doc
+    $pkgname-dev
+    xkbcli
+    xkbcli-bash-completion
+    "
+source="https://github.com/xkbcommon/libxkbcommon/archive/refs/tags/xkbcommon-$pkgver.tar.gz
+    0001-fix-null-handling.patch
+    0002-sync-test-data.patch
+    0004-Do-not-sync-locale.patch
+    0005-fix-more-null-string.patch
+    "
+builddir="$srcdir/libxkbcommon-xkbcommon-$pkgver"
+
+build() {
+    abuild-meson  \
+        -Dc_link_args="-Wl,-lm" \
+        -Denable-wayland=true \
+        -Denable-docs=false \
+        -Denable-x11=false \
+        -Ddefault_library=both \
+        -Ddefault-rules=hidut \
+	build
+
+    meson compile -C build
+}
+
+check() {
+    chmod +x ./test/data/sync.sh
+    ./test/data/sync.sh
+
+    LD_LIBRARY_PATH="$builddir/build":$LD_LIBRARY_PATH \
+    meson test --print-errorlogs -C build || msg "Linux evdev related tests fail as expected"
+}
+
+package() {
+    DESTDIR="$pkgdir" meson install --no-rebuild -C build
+}
+
+xkbcli() {
+    pkgdesc="xkb command-line tool with interactive debugger"
+
+    amove usr/bin/xkbcli
+    amove usr/lib/xkbcommon/xkbcli*
+}
+
+xkbcli_doc() {
+    # ... and run default_doc here to let abuild process man pages
+    default_doc
+    pkgdesc="xkb command-line tool with interactive debugger (documentation)"
+    install_if="docs xkbcli=$pkgver-r$pkgrel"
+}
+
+bashcomp() {
+    default_bashcomp
+
+    pkgdesc="Bash completions for xkbcli"
+    install_if="xkbcli=$pkgver-r$pkgrel bash-completion"
+}
+
+
+
+sha512sums="
+2e9a9c02bcc515c43db38266ad4b23d3530be3de28d05e086d3c12155cf1c569609a55fa4ea4ca9b0adbd8d2a553724bfa78f63481487bfee6379b3664f3aed0  xkbcommon-1.8.0.tar.gz
+3d68ce3f484f1bd7692a59a6bb9aeaba39de22125cb620d75818f922ad4792d63f2a5b04ea9070301afb872f07b7ec37c062d5aaeb74d74b76458ab23c207d3e  0001-fix-null-handling.patch
+54229b11572cf2c025315bad56dfdd93b77da389c2c33a8363428834f6bc0749a997ed030ed18eddfad5c081393b7d36c3867f2b7cb9300a39c56aaf880ad79b  0002-sync-test-data.patch
+99478b4bd4c066c9df749b1ff3ab6872fe65ba049a84eeb684e24e0ecfae42f2ff0ca1ed61989798dabf3293fbc4d81cb466030ae4d9e22d4b7fa389b5a4e185  0004-Do-not-sync-locale.patch
+9b455138827f8ed4d4b135073928d2ec927bf92c08bee76e51636661dc7d835fce8cc055299461fbee64775faaf92ed2e1e7ac0868da5d16b093ac77ce3eaa7d  0005-fix-more-null-string.patch
+"

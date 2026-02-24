@@ -1,0 +1,42 @@
+From 5937678fe27f32481b2f60df069b80d400b32512 Mon Sep 17 00:00:00 2001
+From: Marcin Sochacki <msochacki@qnx.com>
+Date: Fri, 27 Jun 2025 10:12:59 +0200
+Subject: [PATCH 2/4] sync-test-data
+
+---
+ test/data/sync.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/test/data/sync.sh b/test/data/sync.sh
+index 2cbcc0a5..27720580 100755
+--- a/test/data/sync.sh
++++ b/test/data/sync.sh
+@@ -1,7 +1,7 @@
+ #/bin/sh
+ set -euo pipefail
+ 
+-XKBCONFIGROOT='/usr/share/X11/xkb'
++XKBCONFIGROOT="$QNX_TARGET/usr/share/X11/xkb"
+ XLOCALEDIR='/usr/share/X11/locale'
+ 
+ if [ ! -d test/data ]; then
+@@ -42,6 +42,7 @@ for file in \
+     keycodes/xfree86 \
+     keycodes/aliases \
+     keycodes/evdev \
++    keycodes/hidut \
+     keycodes/empty \
+     types/complete \
+     types/pc \
+@@ -66,6 +67,7 @@ for file in \
+     compat/mousekeys \
+     rules/base \
+     rules/evdev \
++    rules/hidut \
+ ; do
+     cp "$XKBCONFIGROOT/$file" "test/data/$file"
+ done
+-- 
+2.49.0.windows.1
+
+

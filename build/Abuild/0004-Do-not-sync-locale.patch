@@ -1,0 +1,27 @@
+From a1a0bcab551bf6092db2f82f9d9af1236c16ed3c Mon Sep 17 00:00:00 2001
+From: Felix Xing <fxing@qnx.com>
+Date: Wed, 9 Jul 2025 10:21:18 -0400
+Subject: [PATCH 4/4] Do not sync locale
+
+---
+ test/data/sync.sh | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
+
+diff --git a/test/data/sync.sh b/test/data/sync.sh
+index 27720580..8b07e69e 100755
+--- a/test/data/sync.sh
++++ b/test/data/sync.sh
+@@ -1,8 +1,8 @@
+ #/bin/sh
+ set -euo pipefail
+ 
+-XKBCONFIGROOT="$QNX_TARGET/usr/share/X11/xkb"
+-XLOCALEDIR='/usr/share/X11/locale'
++XKBCONFIGROOT="/usr/share/X11/xkb"
++XLOCALEDIR='/usr/share/X11/locale'
+ 
+ if [ ! -d test/data ]; then
+     echo "Run this from the top source dir"
+2.49.0.windows.1
+
+
