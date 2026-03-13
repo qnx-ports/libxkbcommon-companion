@@ -1,6 +1,6 @@
 pkgname=libxkbcommon
 pkgver=1.8.0
-pkgrel=2
+pkgrel=${pkgrel:-0}
 pkgdesc="keyboard handling library"
 url="https://xkbcommon.org/"
 arch="all"
@@ -82,6 +82,7 @@ bashcomp() {
 
 
 
+options="$options ${DISABLE_CHECK:+!check}"
 sha512sums="
 2e9a9c02bcc515c43db38266ad4b23d3530be3de28d05e086d3c12155cf1c569609a55fa4ea4ca9b0adbd8d2a553724bfa78f63481487bfee6379b3664f3aed0  xkbcommon-1.8.0.tar.gz
 3d68ce3f484f1bd7692a59a6bb9aeaba39de22125cb620d75818f922ad4792d63f2a5b04ea9070301afb872f07b7ec37c062d5aaeb74d74b76458ab23c207d3e  0001-fix-null-handling.patch
